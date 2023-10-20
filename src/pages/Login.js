@@ -1,6 +1,7 @@
-// Login.js
+// Login
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -9,6 +10,7 @@ const Login = () => {
   });
 
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,6 +22,7 @@ const Login = () => {
     try {
       const response = await axios.post('https://connections-api.herokuapp.com/users/login', user);
       console.log('User logged in:', response.data);
+      navigate('/contacts'); // Перенаправлення користувача на сторінку "/contacts" після успішного логіну
     } catch (error) {
       setError('Login failed. Please check your email and password.');
     }

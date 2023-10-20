@@ -1,3 +1,4 @@
+// Navigation
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -23,10 +24,10 @@ const SubMenu = () => {
   return (
     <ul>
       <li>
-        <Link to="/contacts">Contact List</Link>
+        <Link to="/contacts/list">Contact List</Link> {/* Оновлений шлях для списку контактів */}
       </li>
       <li>
-        <Link to="/filter">Filter</Link>
+        <Link to="/contacts/filter">Filter</Link> {/* Оновлений шлях для фільтрації */}
       </li>
     </ul>
   );
