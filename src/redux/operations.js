@@ -16,4 +16,3 @@ export const deleteContact = createAsyncThunk('contacts/deleteContact', async (c
   await api.deleteContact(contactId);
   return contactId;
 });
-

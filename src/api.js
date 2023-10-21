@@ -3,27 +3,44 @@ import axios from 'axios';
 
 const BASE_URL = 'https://connections-api.herokuapp.com';
 
-export const fetchContacts = async () => {
+export const fetchContacts = async (token) => {
   try {
-    const response = await axios.get(`${BASE_URL}/contacts`);
+    const response = await axios.get(`${BASE_URL}/contacts`, {
+      headers: { Authorization: token },
+    });
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const addContact = async (contact) => {
+export const addContact = async (token, contact) => {
   try {
-    const response = await axios.post(`${BASE_URL}/contacts`, contact);
+    const response = await axios.post(`${BASE_URL}/contacts`, contact, {
+      headers: { Authorization: token },
+    });
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteContact = async (contactId) => {
+export const deleteContact = async (token, contactId) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/contacts/${contactId}`);
+    const response = await axios.delete(`${BASE_URL}/contacts/${contactId}`, {
+      headers: { Authorization: token },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateContact = async (token, contactId, updatedContact) => {
+  try {
+    const response = await axios.patch(`${BASE_URL}/contacts/${contactId}`, updatedContact, {
+      headers: { Authorization: token },
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -69,3 +86,4 @@ export const getCurrentUser = async (token) => {
     throw error;
   }
 };
+

@@ -9,15 +9,21 @@ const UserMenu = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
+  // eslint-disable-next-line
   const handleLogout = async () => {
     try {
-      // Виконати вихід користувача, можливо, відправивши запит на сервер
-      await logoutUser(); // Викликати функцію виходу з облікового запису
-
-      // Відправити дію для очищення користувача в Redux
-      dispatch(clearUser());
+      const response = await logoutUser();
+      
+      if (response.status === 200) {
+        localStorage.removeItem('token');
+        dispatch(clearUser());
+      } else {
+        // Обробка помилки в разі невдалого виходу
+        console.error('Failed to logout');
+      }
     } catch (error) {
-      console.error('Logout failed:', error);
+      // Обробка помилки, якщо запит взагалі не вдалося виконати
+      console.error('Failed to logout');
     }
   };
 
@@ -26,7 +32,6 @@ const UserMenu = () => {
       {user ? (
         <div>
           <p>{user.email}</p>
-          <button onClick={handleLogout}>Logout</button>
           <ul>
             <li>
               <Link to="/contacts/list">List</Link>
@@ -44,3 +49,4 @@ const UserMenu = () => {
 };
 
 export default UserMenu;
+
