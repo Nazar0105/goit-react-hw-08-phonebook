@@ -86,4 +86,3 @@ export const getCurrentUser = async (token) => {
     throw error;
   }
 };
-

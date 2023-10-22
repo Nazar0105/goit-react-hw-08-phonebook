@@ -1,5 +1,5 @@
 // contactsSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
 import * as api from '../api';
 
 export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
@@ -38,5 +38,10 @@ const contactsSlice = createSlice({
 });
 
 export const selectContacts = (state) => state.contacts.contacts;
+
+export const selectContactsCount = createSelector(
+  selectContacts,
+  (contacts) => contacts.length
+);
 
 export default contactsSlice.reducer;
