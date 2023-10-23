@@ -1,21 +1,21 @@
-// App.js
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Routes, Route, Navigate } from 'react-router-dom';
+import { Link, Routes, Route } from 'react-router-dom';
 import ContactList from '../components/ContactList/ContactList';
-import UserMenu from '../components/UserMenu/UserMenu';
-import Contacts from 'pages/Contacts'; // Імпорт Contacts
+import Contacts from 'pages/Contacts';
 import Register from '../pages/Register';
 import Login from '../pages/Login';
 import { fetchContacts } from '../redux/contactsSlice';
 import { selectUser, clearUser, setUser } from '../redux/userSlice';
-import { selectContactsCount } from '../redux/contactsSlice'; // Імпорт selectContactsCount
+import { selectContactsCount } from '../redux/contactsSlice';
 import styles from './App.module.css';
+import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
+import RestrictedRoute from '../components/RestrictedRoute/RestrictedRoute';
 
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const contactsCount = useSelector(selectContactsCount); // Використання selectContactsCount
+  const contactsCount = useSelector(selectContactsCount);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -33,7 +33,7 @@ const App = () => {
   return (
     <div className={styles.container}>
       <h1>Phonebook</h1>
-      <p>Total Contacts: {contactsCount}</p> {/* Відображення загальної кількості контактів */}
+      <p>Total Contacts: {contactsCount}</p>
       <nav>
         {user ? (
           <ul>
@@ -57,24 +57,30 @@ const App = () => {
       </nav>
       <Routes>
         <Route
-          path="/contacts"
+          path="/contacts/*"
           element={
-            user ? <UserMenu /> : <Navigate to="/login" />
+            <PrivateRoute redirectTo="/login">
+              <Routes>
+                <Route index element={<Contacts />} />
+                <Route path="contact-list" element={<ContactList />} />
+              </Routes>
+            </PrivateRoute>
           }
-        >
-          <Route index element={<Contacts />} /> {/* Використовую компонент Contacts тут */}
-          <Route path="list" element={<ContactList />} />
-        </Route>
+        />
         <Route
           path="login"
           element={
-            user ? <Navigate to="/contacts" /> : <Login />
+            <RestrictedRoute redirectTo="/contacts">
+              <Login />
+            </RestrictedRoute>
           }
         />
         <Route
           path="register"
           element={
-            user ? <Navigate to="/contacts" /> : <Register />
+            <RestrictedRoute redirectTo="/contacts">
+              <Register />
+            </RestrictedRoute>
           }
         />
       </Routes>
