@@ -11,14 +11,15 @@ const Contacts = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const contactsData = await fetchContacts(); // Передаємо токен через функцію
+        const token = localStorage.getItem('token'); // Отримайте токен з локального сховища
+        const contactsData = await fetchContacts(token); // Передайте токен до функції
         setContacts(contactsData);
       } catch (error) {
         console.error('Помилка завантаження контактів з сервера:', error);
       }
     };
 
-    fetchData(); // Виклик функції для завантаження контактів при завантаженні компонента
+    fetchData();
   }, []);
 
   const addNewContact = async (newContact) => {
