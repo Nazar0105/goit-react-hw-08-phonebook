@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios'; 
-import { setUser } from '../redux/userSlice';
+import { setToken } from '../redux/userSlice'; 
 
 const Login = () => {
   const [user, setUserState] = useState({
@@ -25,15 +25,16 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://connections-api.herokuapp.com/users/login', user); // Виконуємо логін за допомогою Axios
+      const response = await axios.post('https://connections-api.herokuapp.com/users/login', user);
       if (response.status === 200) {
         const data = response.data;
         console.log('User logged in:', data);
         localStorage.setItem('token', data.token);
-        dispatch(setUser({ token: data.token }));
+        dispatch(setToken(data.token)); // Збереження токену через Redux
         navigate('/contacts');
       } else {
         setError('Login failed. Please check your email and password.');

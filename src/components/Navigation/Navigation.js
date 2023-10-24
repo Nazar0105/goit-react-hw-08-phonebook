@@ -1,39 +1,53 @@
-// Navigation
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectToken } from '../../redux/userSlice';
 
 const MainMenu = () => {
+  const token = useSelector(selectToken);
+
   return (
     <nav>
       <ul>
-        <li>
-          <Link to="/register">Register</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/contacts">Contacts</Link>
-        </li>
+        {token ? (
+          <li>
+            <Link to="/contacts"></Link>
+          </li>
+        ) : (
+          <>
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );
 };
 
 const SubMenu = () => {
+  const token = useSelector(selectToken);
+
   return (
     <ul>
-      <li>
-        <Link to="/contacts/list">Contact List</Link> {/* Оновлений шлях для списку контактів */}
-      </li>
-      <li>
-        <Link to="/contacts/filter">Filter</Link> {/* Оновлений шлях для фільтрації */}
-      </li>
+      {token && (
+        <>
+          <li>
+            <Link to="/contacts/list"></Link>
+          </li>
+          <li>
+            <Link to="/contacts/filter"></Link>
+          </li>
+        </>
+      )}
     </ul>
   );
 };
 
-const Navigation = () => {
+const Navigation = ({ onLogout }) => {
   return (
     <div>
       <MainMenu />

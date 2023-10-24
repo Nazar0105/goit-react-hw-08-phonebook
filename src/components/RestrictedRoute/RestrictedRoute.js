@@ -1,19 +1,21 @@
-import { useEffect } from 'react'; // Імпортуємо useEffect
+// RestrictedRoute.js
+// Оновлено імпорти та користування селектором
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/userSlice';
+import { selectToken } from '../../redux/userSlice';
 
 const RestrictedRoute = ({ redirectTo, children }) => {
-  const user = useSelector(selectUser);
+  const token = useSelector(selectToken); // Оновлено селектор
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate(redirectTo);
     }
-  }, [user, navigate, redirectTo]); // Включаємо залежності
+  }, [token, navigate, redirectTo]);
 
-  if (user) {
+  if (token) {
     return null;
   }
 
@@ -21,3 +23,4 @@ const RestrictedRoute = ({ redirectTo, children }) => {
 };
 
 export default RestrictedRoute;
+

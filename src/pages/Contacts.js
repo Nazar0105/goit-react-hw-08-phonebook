@@ -3,6 +3,7 @@ import ContactForm from '../components/ContactForm/ContactForm';
 import ContactList from '../components/ContactList/ContactList'; // Імпортуємо компонент ContactList
 import UserMenu from '../components/UserMenu/UserMenu';
 import Filter from '../components/Filter/Filter';
+import LogoutButton from '../components/LogoutButton/LogoutButton';
 import { fetchContacts, addContact, deleteContact, updateContact } from '../api';
 
 const Contacts = () => {
@@ -64,6 +65,7 @@ const Contacts = () => {
       <ContactForm onAddContact={addNewContact} selectedContact={selectedContact} onUpdateContact={updateContactData} />
       <Filter filter={filter} setFilter={setFilter} />
       <ContactList contacts={filteredContacts} onDeleteContact={deleteContactData} onEditContact={setSelectedContact} />
+      <LogoutButton />
     </div>
   );
 };

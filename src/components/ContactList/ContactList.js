@@ -22,5 +22,3 @@ const ContactList = ({ filter }) => {
 };
 
 export default ContactList;
-
-

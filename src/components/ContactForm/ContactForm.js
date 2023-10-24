@@ -1,19 +1,12 @@
-// ContactForm
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact, selectContacts } from '../../redux/contactsSlice';
 import styles from './ContactForm.module.css';
+import axios from 'axios';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
-  // Отримайте контакти через useSelector
-  const contacts = useSelector(selectContacts);
-
-  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,26 +17,34 @@ const ContactForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const contact = { name, number };
+      const token = 'your_token_here';
 
-    if (name.trim() === '' || number.trim() === '') {
-      setError('Both name and number are required.');
-      return;
+      const response = await axios.post(
+        'https://connections-api.herokuapp.com/contacts',
+        contact,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        console.log('Contact added:', response.data);
+        setName('');
+        setNumber('');
+        setSuccess('Contact added successfully.');
+      } else {
+        setError('Failed to add contact.');
+      }
+    } catch (error) {
+      setError('Failed to add contact.');
     }
-
-    // Перевірте, чи контакт з таким ім'ям вже існує
-    if (contacts.find((contact) => contact.name === name)) {
-      setError('This name is already in contacts.');
-      return;
-    }
-
-    // Використовуйте addContact для додавання контакту
-    dispatch(addContact({ name, number }));
-    setName('');
-    setNumber('');
-    setSuccess('Contact added successfully.');
-    setError('');
   };
 
   return (
