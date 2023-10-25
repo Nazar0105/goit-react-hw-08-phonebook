@@ -1,28 +1,45 @@
 // store
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import contactsReducer from './contactsSlice';
-import { filterReducer } from './filterSlice';
-import userReducer from './userSlice';
-import thunk from 'redux-thunk';
-import { persistStore, persistReducer } from 'redux-persist';
+import { configureStore } from '@reduxjs/toolkit';
+import { getDefaultMiddleware } from '@reduxjs/toolkit';
+import { authReducer } from 'redux/auth/slice';
+import { contactsReducer } from 'redux/contacts/contactsSlice';
+import { filterReducer } from 'redux/filter/filterSlice';
 import storage from 'redux-persist/lib/storage';
 
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['user'], // Список редуксів, які ви хочете зберегти
-};
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 
-const persistedReducer = persistReducer(persistConfig, userReducer);
+const middleware = [
+  ...getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+];
+
+
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  whitelist: ['token'],
+};
 
 export const store = configureStore({
   reducer: {
-    contacts: contactsReducer,
-    filter: filterReducer,
-    user: persistedReducer, // Використовуємо персистований редукс для користувача
+    contacts: contactsReducer, 
+    filter: filterReducer, 
+    auth: persistReducer(authPersistConfig, authReducer),
   },
-  middleware: [...getDefaultMiddleware(), thunk],
+  middleware,
+  devTools: process.env.NODE_ENV === 'development',
 });
 
 export const persistor = persistStore(store);
-

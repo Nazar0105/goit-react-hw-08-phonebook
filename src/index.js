@@ -1,29 +1,21 @@
-// index
+// index-src
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
-import App from './components/App';
+import ReactDOM from 'react-dom/client';
+import { App } from 'components/App/App';
 import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
-import { PersistGate } from 'redux-persist/integration/react'; // Додано імпорт з redux-persist
+import { PersistGate } from 'redux-persist/integration/react';
+import { BrowserRouter } from 'react-router-dom';
+import './index.css';
 
-const root = document.getElementById('root');
-const createRootInstance = createRoot(root);
-
-const render = (Component) => {
-  createRootInstance.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Router>
-          <Component />
-        </Router>
+        <BrowserRouter basename="/goit-react-hw-08-phonebook">
+          <App />
+        </BrowserRouter>
       </PersistGate>
     </Provider>
-  );
-};
-
-if (root.hasChildNodes()) {
-  createRootInstance.unmount();
-}
-
-render(App);
+  </React.StrictMode>
+);
