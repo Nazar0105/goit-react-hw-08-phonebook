@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Label = styled.label`
-  color: #000000;
+  color: #7fff00;
   font-size: 20px;
   margin-bottom: 5px;
 `;
@@ -19,5 +19,5 @@ export const Input = styled.input`
   padding: 10px;
   margin: 0 auto;
   border-radius: 4px;
-  border: 3px solid #f08080;
+  border: 3px solid #7fff00;
 `;

@@ -1,4 +1,3 @@
-// PhoneIcons
 import { useEffect } from 'react';
 
 const PhoneIcons = () => {
@@ -6,7 +5,6 @@ const PhoneIcons = () => {
     const createPhone = () => {
       let phone = document.createElement('div');
       phone.classList.add('phone');
-      phone.innerHTML = '☎️';
       phone.style.position = 'absolute';
       phone.style.zIndex = '1';
 
@@ -47,7 +45,7 @@ const PhoneIcons = () => {
     }
   }, []);
 
-  return;
+  return null;
 };
 
 export default PhoneIcons;
